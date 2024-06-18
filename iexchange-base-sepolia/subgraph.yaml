@@ -1,0 +1,113 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: OptimisticP2P
+    network: base-sepolia
+    source:
+      address: "0xB2002EaFC86DD21eaDAed4b1a7857357a6C3f41f"
+      abi: OptimisticP2P
+      startBlock: 11468519
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - CurrencyAdded
+        - CurrencyRemoved
+        - DAOVoted
+        - MerchantStaked
+        - MerchantUnstaked
+        - MerchantVoted
+        - NewMerchant
+        - NewOffer
+        - NewOrder
+        - NewSettler
+        - NewTrader
+        - OfferDisabled
+        - OfferEnabled
+        - OrderAccepted
+        - OrderAppealed
+        - OrderCancelled
+        - OrderPaid
+        - OrderReleased
+        - OwnershipTransferred
+        - PaymentMethodAdded
+        - PaymentMethodRemoved
+        - PenaltySlashed
+        - RewardDistributed
+        - SettlerAssignedToCase
+        - SettlerStaked
+        - SettlerUnstaked
+        - SettlerVoted
+        - TokenAdded
+        - TokenRemoved
+        - TraderVoted
+      abis:
+        - name: OptimisticP2P
+          file: ./abis/OptimisticP2P.json
+      eventHandlers:
+        - event: CurrencyAdded(address,string)
+          handler: handleCurrencyAdded
+        - event: CurrencyRemoved(address,string)
+          handler: handleCurrencyRemoved
+        - event: DAOVoted(indexed uint256,uint8)
+          handler: handleDAOVoted
+        - event: MerchantStaked(indexed address,indexed uint256)
+          handler: handleMerchantStaked
+        - event: MerchantUnstaked(indexed address,indexed uint256)
+          handler: handleMerchantUnstaked
+        - event: MerchantVoted(indexed uint256,indexed address,indexed bool,uint8,uint256)
+          handler: handleMerchantVoted
+        - event: NewMerchant(indexed address)
+          handler: handleNewMerchant
+        - event: NewOffer(indexed address,indexed string,indexed bytes32,uint256,uint256,uint256,uint256,bool,address,bytes32,address,uint8)
+          handler: handleNewOffer
+        - event: NewOrder(indexed uint256,indexed address,indexed uint8,uint256,address,bytes32,uint256,uint8)
+          handler: handleNewOrder
+        - event: NewSettler(indexed address)
+          handler: handleNewSettler
+        - event: NewTrader(indexed address)
+          handler: handleNewTrader
+        - event: OfferDisabled(indexed uint256,indexed bool)
+          handler: handleOfferDisabled
+        - event: OfferEnabled(indexed uint256,indexed bool)
+          handler: handleOfferEnabled
+        - event: OrderAccepted(indexed uint256,uint8)
+          handler: handleOrderAccepted
+        - event: OrderAppealed(indexed uint256,indexed uint256,indexed address,bytes32,uint8,uint8,uint8)
+          handler: handleOrderAppealed
+        - event: OrderCancelled(indexed uint256,uint8)
+          handler: handleOrderCancelled
+        - event: OrderPaid(indexed uint256,uint8)
+          handler: handleOrderPaid
+        - event: OrderReleased(indexed uint256,uint8)
+          handler: handleOrderReleased
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: PaymentMethodAdded(address,string)
+          handler: handlePaymentMethodAdded
+        - event: PaymentMethodRemoved(address,string)
+          handler: handlePaymentMethodRemoved
+        - event: PenaltySlashed(indexed uint256,address[])
+          handler: handlePenaltySlashed
+        - event: RewardDistributed(indexed uint256,address[])
+          handler: handleRewardDistributed
+        - event: SettlerAssignedToCase(address,uint256)
+          handler: handleSettlerAssignedToCase
+        - event: SettlerStaked(indexed address,indexed uint256)
+          handler: handleSettlerStaked
+        - event: SettlerUnstaked(indexed address,indexed uint256)
+          handler: handleSettlerUnstaked
+        - event: SettlerVoted(indexed uint256,indexed address,indexed bool,uint8,uint256)
+          handler: handleSettlerVoted
+        - event: TokenAdded(indexed address,address)
+          handler: handleTokenAdded
+        - event: TokenRemoved(indexed address,address)
+          handler: handleTokenRemoved
+        - event: TraderVoted(indexed uint256,indexed address,indexed bool,uint8,uint256)
+          handler: handleTraderVoted
+      file: ./src/optimistic-p-2-p.ts
