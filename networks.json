@@ -1,0 +1,14 @@
+{
+  "base-sepolia": {
+    "OptimisticP2P": {
+      "address": "0xB2002EaFC86DD21eaDAed4b1a7857357a6C3f41f",
+      "startBlock": 11468519
+    },
+    "KYCWhitelist": {
+      "address": "0xa7c3a5bd99E11E0d8cD21952a0133449b194d3A8"
+    },
+    "AMLBlacklist": {
+      "address": "0x18604e817ad31fF53031B955f834Df4B26e5AB73"
+    }
+  }
+}

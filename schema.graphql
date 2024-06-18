@@ -294,3 +294,89 @@ type TraderVoted @entity(immutable: true) {
   blockTimestamp: BigInt!
   transactionHash: Bytes!
 }
+type AgentAdded @entity(immutable: true) {
+  id: Bytes!
+  _agent: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type AgentRemoved @entity(immutable: true) {
+  id: Bytes!
+  _agent: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type KYCLevelDowngraded @entity(immutable: true) {
+  id: Bytes!
+  _address: Bytes! # address
+  _agent: Bytes! # address
+  _level: Int! # uint8
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type KYCLevelUpgraded @entity(immutable: true) {
+  id: Bytes!
+  _address: Bytes! # address
+  _agent: Bytes! # address
+  _level: Int! # uint8
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type KYCWhitelistOwnershipTransferred @entity(immutable: true) {
+  id: Bytes!
+  previousOwner: Bytes! # address
+  newOwner: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+type AMLBlacklistAgentAdded @entity(immutable: true) {
+  id: Bytes!
+  _agent: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type AMLBlacklistAgentRemoved @entity(immutable: true) {
+  id: Bytes!
+  _agent: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type BlacklistAdded @entity(immutable: true) {
+  id: Bytes!
+  _address: Bytes! # address
+  _agent: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type BlacklistRemoved @entity(immutable: true) {
+  id: Bytes!
+  _address: Bytes! # address
+  _agent: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type AMLBlacklistOwnershipTransferred @entity(immutable: true) {
+  id: Bytes!
+  previousOwner: Bytes! # address
+  newOwner: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}

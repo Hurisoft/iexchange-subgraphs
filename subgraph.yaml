@@ -64,9 +64,11 @@ dataSources:
           handler: handleMerchantVoted
         - event: NewMerchant(indexed address)
           handler: handleNewMerchant
-        - event: NewOffer(indexed address,indexed string,indexed bytes32,uint256,uint256,uint256,uint256,bool,address,bytes32,address,uint8)
+        - event: NewOffer(indexed address,indexed string,indexed
+            bytes32,uint256,uint256,uint256,uint256,bool,address,bytes32,address,uint8)
           handler: handleNewOffer
-        - event: NewOrder(indexed uint256,indexed address,indexed uint8,uint256,address,bytes32,uint256,uint8)
+        - event: NewOrder(indexed uint256,indexed address,indexed
+            uint8,uint256,address,bytes32,uint256,uint8)
           handler: handleNewOrder
         - event: NewSettler(indexed address)
           handler: handleNewSettler
@@ -78,7 +80,8 @@ dataSources:
           handler: handleOfferEnabled
         - event: OrderAccepted(indexed uint256,uint8)
           handler: handleOrderAccepted
-        - event: OrderAppealed(indexed uint256,indexed uint256,indexed address,bytes32,uint8,uint8,uint8)
+        - event: OrderAppealed(indexed uint256,indexed uint256,indexed
+            address,bytes32,uint8,uint8,uint8)
           handler: handleOrderAppealed
         - event: OrderCancelled(indexed uint256,uint8)
           handler: handleOrderCancelled
@@ -111,3 +114,67 @@ dataSources:
         - event: TraderVoted(indexed uint256,indexed address,indexed bool,uint8,uint256)
           handler: handleTraderVoted
       file: ./src/optimistic-p-2-p.ts
+  - kind: ethereum
+    name: KYCWhitelist
+    network: base-sepolia
+    source:
+      address: "0xa7c3a5bd99E11E0d8cD21952a0133449b194d3A8"
+      abi: KYCWhitelist
+      startBlock: 11467671
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - AgentAdded
+        - AgentRemoved
+        - KYCLevelDowngraded
+        - KYCLevelUpgraded
+        - KYCWhitelistOwnershipTransferred
+      abis:
+        - name: KYCWhitelist
+          file: ./abis/KYCWhitelist.json
+      eventHandlers:
+        - event: AgentAdded(indexed address)
+          handler: handleAgentAdded
+        - event: AgentRemoved(indexed address)
+          handler: handleAgentRemoved
+        - event: KYCLevelDowngraded(address,address,uint8)
+          handler: handleKYCLevelDowngraded
+        - event: KYCLevelUpgraded(address,address,uint8)
+          handler: handleKYCLevelUpgraded
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+      file: ./src/kyc-whitelist.ts
+  - kind: ethereum
+    name: AMLBlacklist
+    network: base-sepolia
+    source:
+      address: "0x18604e817ad31fF53031B955f834Df4B26e5AB73"
+      abi: AMLBlacklist
+      startBlock: 11467709
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - AMLBlacklistAgentAdded
+        - AMLBlacklistAgentRemoved
+        - BlacklistAdded
+        - BlacklistRemoved
+        - AMLBlacklistOwnershipTransferred
+      abis:
+        - name: AMLBlacklist
+          file: ./abis/AMLBlacklist.json
+      eventHandlers:
+        - event: AgentAdded(indexed address)
+          handler: handleAgentAdded
+        - event: AgentRemoved(indexed address)
+          handler: handleAgentRemoved
+        - event: BlacklistAdded(address,address)
+          handler: handleBlacklistAdded
+        - event: BlacklistRemoved(address,address)
+          handler: handleBlacklistRemoved
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+      file: ./src/aml-blacklist.ts
