@@ -593,9 +593,9 @@
       },
       {
         "indexed": true,
-        "internalType": "bytes32",
+        "internalType": "string",
         "name": "paymentMethod",
-        "type": "bytes32"
+        "type": "string"
       },
       {
         "indexed": false,
@@ -979,6 +979,12 @@
       }
     ],
     "name": "PenaltySlashed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [],
+    "name": "ProtocolParamsUpdated",
     "type": "event"
   },
   {
@@ -1404,9 +1410,9 @@
         "type": "string"
       },
       {
-        "internalType": "bytes32",
+        "internalType": "string",
         "name": "paymentMethod",
-        "type": "bytes32"
+        "type": "string"
       },
       {
         "internalType": "uint256",
@@ -1450,11 +1456,6 @@
         "internalType": "uint256",
         "name": "offerId",
         "type": "uint256"
-      },
-      {
-        "internalType": "enum P2Pparams.TradeType",
-        "name": "orderType",
-        "type": "uint8"
       },
       {
         "internalType": "uint256",
@@ -1689,9 +1690,9 @@
         "type": "string"
       },
       {
-        "internalType": "bytes32",
+        "internalType": "string",
         "name": "paymentMethod",
-        "type": "bytes32"
+        "type": "string"
       },
       {
         "internalType": "uint256",
@@ -1850,6 +1851,13 @@
   {
     "inputs": [],
     "name": "registerSettler",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "registerTrader",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -2037,32 +2045,6 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "stakeMerchant",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "stakeSettler",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "address",
         "name": "",
         "type": "address"
@@ -2125,6 +2107,79 @@
       }
     ],
     "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_daoAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IKYCWhitelist",
+        "name": "_kycAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IAMLBlacklist",
+        "name": "_amlAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IERC20Metadata",
+        "name": "_usdtAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_merchantStakeAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_settlerStakeAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_settlerMinTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_settlerMaxTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_daoMinTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_concurrentSettlerSettlements",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_concurrentMerchantSettlements",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_appealAfter",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_maxAppealRounds",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateProtocolParams",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
