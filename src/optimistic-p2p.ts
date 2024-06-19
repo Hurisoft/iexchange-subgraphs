@@ -45,50 +45,54 @@ import {
 import { saveAccount, bigIntToBytes } from "./helpers";
 
 export function handleCurrencyAdded(event: CurrencyAddedEvent): void {
-  const id = Bytes.fromUTF8(event.params._currency);
+  const id = event.params._currency;
   let currency = Currency.load(id);
   if (currency == null) {
     currency = new Currency(id);
   }
   currency.addedBy = event.params._addedBy;
-  currency.currency = event.params._currency;
+  currency.currency = event.params._currency.toString();
   currency.isAccepted = true;
+  saveAccount(event.params._addedBy);
   currency.save();
 }
 
 export function handleCurrencyRemoved(event: CurrencyRemovedEvent): void {
-  const id = Bytes.fromUTF8(event.params._currency);
+  const id = event.params._currency;
   let currency = Currency.load(id);
   if (currency == null) {
     return;
   }
   currency.removedBy = event.params._removedBy;
   currency.isAccepted = false;
+  saveAccount(event.params._removedBy);
   currency.save();
 }
 
 export function handlePaymentMethodAdded(event: PaymentMethodAddedEvent): void {
-  const id = Bytes.fromUTF8(event.params._method);
+  const id = event.params._method;
   let method = PaymentMethod.load(id);
   if (method == null) {
     method = new PaymentMethod(id);
   }
   method.addedBy = event.params._addedBy;
-  method.method = event.params._method;
+  method.method = event.params._method.toString();
   method.isAccepted = true;
+  saveAccount(event.params._addedBy);
   method.save();
 }
 
 export function handlePaymentMethodRemoved(
   event: PaymentMethodRemovedEvent
 ): void {
-  const id = Bytes.fromUTF8(event.params._method);
+  const id = event.params._method;
   let method = PaymentMethod.load(id);
   if (method == null) {
     return;
   }
   method.removedBy = event.params._removedBy;
   method.isAccepted = false;
+  saveAccount(event.params._removedBy);
   method.save();
 }
 
@@ -103,6 +107,7 @@ export function handleTokenAdded(event: TokenAddedEvent): void {
   token.symbol = erc20.try_symbol().reverted ? "" : erc20.symbol();
   token.addedBy = event.params._addedBy;
   token.isTraded = true;
+  saveAccount(event.params._addedBy);
   token.save();
 }
 
@@ -114,6 +119,7 @@ export function handleTokenRemoved(event: TokenRemovedEvent): void {
   }
   token.removedBy = event.params._addedBy;
   token.isTraded = false;
+  saveAccount(event.params._addedBy);
   token.save();
 }
 
@@ -122,6 +128,11 @@ export function handleNewTrader(event: NewTraderEvent): void {
   let account = Account.load(id);
   if (account == null) {
     account = new Account(id);
+    account.isSettler = false;
+    account.isMerchant = false;
+    account.isKYCAgent = false;
+    account.isAMLAgent = false;
+    account.isDao = false;
   }
   account.isTrader = true;
   account.save();
@@ -132,6 +143,11 @@ export function handleNewMerchant(event: NewMerchantEvent): void {
   let account = Account.load(id);
   if (account == null) {
     account = new Account(id);
+    account.isSettler = false;
+    account.isTrader = false;
+    account.isKYCAgent = false;
+    account.isAMLAgent = false;
+    account.isDao = false;
   }
   account.isMerchant = true;
   account.save();
@@ -142,6 +158,11 @@ export function handleNewSettler(event: NewSettlerEvent): void {
   let account = Account.load(id);
   if (account == null) {
     account = new Account(id);
+    account.isTrader = false;
+    account.isMerchant = false;
+    account.isKYCAgent = false;
+    account.isAMLAgent = false;
+    account.isDao = false;
   }
   account.isSettler = true;
   account.save();
@@ -187,9 +208,7 @@ export function handleNewOffer(event: NewOfferEvent): void {
   offer.merchant = event.params.merchant;
   offer.accountHash = event.params.accountHash;
   offer.depositAddress = event.params.depositAddress;
-
   saveAccount(event.params.depositAddress);
-
   offer.save();
 }
 
@@ -197,7 +216,7 @@ export function handleOfferDisabled(event: OfferDisabledEvent): void {
   const id = bigIntToBytes(event.params.offerId);
   let offer = Offer.load(id);
   if (offer == null) {
-    offer = new Offer(id);
+    return;
   }
   offer.active = event.params.active;
   offer.save();
@@ -207,14 +226,14 @@ export function handleOfferEnabled(event: OfferEnabledEvent): void {
   const id = bigIntToBytes(event.params.offerId);
   let offer = Offer.load(id);
   if (offer == null) {
-    offer = new Offer(id);
+    return;
   }
   offer.active = event.params.active;
   offer.save();
 }
 
 export function handleNewOrder(event: NewOrderEvent): void {
-  const id = event.transaction.hash;
+  const id = bigIntToBytes(event.params.orderId);
   let order = Order.load(id);
   if (order == null) {
     order = new Order(id);
@@ -222,15 +241,12 @@ export function handleNewOrder(event: NewOrderEvent): void {
   order.offer = bigIntToBytes(event.params.offerId);
   order.trader = event.params.trader;
   order.orderType = event.params.orderType;
+  order.quantity = event.params.quantity;
+  order.depositAddress = event.params.depositAddress;
+  order.accountHash = event.params.accountHash;
   order.appeal = bigIntToBytes(event.params.appealId);
   order.status = event.params.status;
-
-  order.quantity = event.params.quantity;
-  order.accountHash = event.params.accountHash;
-  order.depositAddress = event.params.depositAddress;
-
   saveAccount(event.params.depositAddress);
-
   order.save();
 }
 
@@ -290,7 +306,6 @@ export function handleOrderAppealed(event: OrderAppealedEvent): void {
   appeal.reasonHash = event.params.reasonHash;
   appeal.daoVote = event.params.daoVote;
   appeal.save();
-
   order.status = event.params.status;
   order.appeal = appealId;
   order.save();
@@ -328,12 +343,13 @@ export function handleSettlerVoted(event: SettlerVotedEvent): void {
   if (appeal == null) {
     return;
   }
-  let roundId = bigIntToBytes(event.params.appealId).concat(
-    bigIntToBytes(event.params.roundId)
-  );
+  let roundId = appealId.concat(bigIntToBytes(event.params.roundId));
   let round = AppealRound.load(roundId);
   if (round == null) {
     round = new AppealRound(roundId);
+    round.merchantVote = 0;
+    round.traderVote = 0;
+    round.appeal = appealId;
   }
   round.settler = event.params.settler;
   round.settled = event.params.settled;
@@ -352,9 +368,7 @@ export function handleTraderVoted(event: TraderVotedEvent): void {
   if (appeal == null) {
     return;
   }
-  let roundId = bigIntToBytes(event.params.appealId).concat(
-    bigIntToBytes(event.params.roundId)
-  );
+  let roundId = appealId.concat(bigIntToBytes(event.params.roundId));
   const round = AppealRound.load(roundId);
   if (round == null) {
     return;
@@ -380,9 +394,7 @@ export function handleMerchantVoted(event: MerchantVotedEvent): void {
   if (appeal == null) {
     return;
   }
-  let roundId = bigIntToBytes(event.params.appealId).concat(
-    bigIntToBytes(event.params.roundId)
-  );
+  let roundId = appealId.concat(bigIntToBytes(event.params.roundId));
   const round = AppealRound.load(roundId);
   if (round == null) {
     return;
@@ -408,6 +420,11 @@ export function handleDAOVoted(event: DAOVotedEvent): void {
   let account = Account.load(id);
   if (account == null) {
     account = new Account(id);
+    account.isSettler = false;
+    account.isTrader = false;
+    account.isMerchant = false;
+    account.isKYCAgent = false;
+    account.isAMLAgent = false;
   }
   account.isDao = true;
   account.save();

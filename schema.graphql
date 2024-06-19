@@ -1,4 +1,4 @@
-type Account @entity(immutable: true) {
+type Account @entity {
   id: Bytes! # address
   isSettler: Boolean!
   isTrader: Boolean!
@@ -19,7 +19,7 @@ type Account @entity(immutable: true) {
   orderDeposits: [Order!]! @derivedFrom(field: "depositAddress")
 }
 
-type P2PToken @entity(immutable: true) {
+type P2PToken @entity {
   id: Bytes! # address
   addedBy: Account!
   removedBy: Account
@@ -29,7 +29,7 @@ type P2PToken @entity(immutable: true) {
   tokenOffers: [Offer!]! @derivedFrom(field: "token")
 }
 
-type Currency @entity(immutable: true) {
+type Currency @entity {
   id: Bytes! # currency bytes
   addedBy: Account!
   removedBy: Account
@@ -38,7 +38,7 @@ type Currency @entity(immutable: true) {
   currencyOffers: [Offer!]! @derivedFrom(field: "currency")
 }
 
-type PaymentMethod @entity(immutable: true) {
+type PaymentMethod @entity {
   id: Bytes! # method bytes
   addedBy: Account!
   removedBy: Account
@@ -47,7 +47,7 @@ type PaymentMethod @entity(immutable: true) {
   offers: [Offer!]! @derivedFrom(field: "paymentMethod")
 }
 
-type Offer @entity(immutable: true) {
+type Offer @entity {
   id: Bytes! # offerId
   token: P2PToken! # address
   currency: Currency! # String
@@ -62,7 +62,7 @@ type Offer @entity(immutable: true) {
   orders: [Order!]! @derivedFrom(field: "offer")
 }
 
-type Order @entity(immutable: true) {
+type Order @entity {
   id: Bytes! # orderId
   offer: Offer!
   trader: Account!
@@ -74,7 +74,7 @@ type Order @entity(immutable: true) {
   status: Int! # uint8
 }
 
-type Appeal @entity(immutable: true) {
+type Appeal @entity {
   id: Bytes! # appealId
   order: Order!
   appealer: Account!
@@ -86,7 +86,7 @@ type Appeal @entity(immutable: true) {
   rounds: [AppealRound!]! @derivedFrom(field: "appeal")
 }
 
-type AppealRound @entity(immutable: true) {
+type AppealRound @entity {
   id: Bytes! # appealId + roundId
   appeal: Appeal!
   settler: Account!

@@ -8,7 +8,7 @@ dataSources:
     name: OptimisticP2P
     network: base-sepolia
     source:
-      address: "0xB2002EaFC86DD21eaDAed4b1a7857357a6C3f41f"
+      address: "0x1AE45424C98301e1D05e25fB4dbc748156aB3092"
       abi: OptimisticP2P
       startBlock: 11468519
     mapping:
@@ -30,11 +30,11 @@ dataSources:
         - name: ERC20
           file: ./abis/ERC20.json
       eventHandlers:
-        - event: CurrencyAdded(address,string)
+        - event: CurrencyAdded(indexed address,indexed string)
           handler: handleCurrencyAdded
-        - event: CurrencyRemoved(address,string)
+        - event: CurrencyRemoved(indexed address,indexed string)
           handler: handleCurrencyRemoved
-        - event: DAOVoted(indexed uint256,uint8)
+        - event: DAOVoted(indexed uint256,indexed uint8)
           handler: handleDAOVoted
         # - event: MerchantStaked(indexed address,indexed uint256)
         #   handler: handleMerchantStaked
@@ -48,7 +48,7 @@ dataSources:
             bytes32,uint256,uint256,uint256,uint256,bool,address,bytes32,address,uint8)
           handler: handleNewOffer
         - event: NewOrder(indexed uint256,indexed address,indexed
-            uint8,uint256,address,bytes32,uint256,uint8)
+            uint8,uint256,uint256,address,bytes32,uint256,uint8)
           handler: handleNewOrder
         - event: NewSettler(indexed address)
           handler: handleNewSettler
@@ -58,28 +58,28 @@ dataSources:
           handler: handleOfferDisabled
         - event: OfferEnabled(indexed uint256,indexed bool)
           handler: handleOfferEnabled
-        - event: OrderAccepted(indexed uint256,uint8)
+        - event: OrderAccepted(indexed uint256,indexed uint8)
           handler: handleOrderAccepted
         - event: OrderAppealed(indexed uint256,indexed uint256,indexed
             address,bytes32,uint8,uint8,uint8)
           handler: handleOrderAppealed
-        - event: OrderCancelled(indexed uint256,uint8)
+        - event: OrderCancelled(indexed uint256,indexed uint8)
           handler: handleOrderCancelled
-        - event: OrderPaid(indexed uint256,uint8)
+        - event: OrderPaid(indexed uint256,indexed uint8)
           handler: handleOrderPaid
-        - event: OrderReleased(indexed uint256,uint8)
+        - event: OrderReleased(indexed uint256,indexed uint8)
           handler: handleOrderReleased
         # - event: OwnershipTransferred(indexed address,indexed address)
         #   handler: handleOwnershipTransferred
-        - event: PaymentMethodAdded(address,string)
+        - event: PaymentMethodAdded(indexed address,indexed string)
           handler: handlePaymentMethodAdded
-        - event: PaymentMethodRemoved(address,string)
+        - event: PaymentMethodRemoved(indexed address,indexed string)
           handler: handlePaymentMethodRemoved
         # - event: PenaltySlashed(indexed uint256,address[])
         #   handler: handlePenaltySlashed
         # - event: RewardDistributed(indexed uint256,address[])
         #   handler: handleRewardDistributed
-        - event: SettlerAssignedToCase(address,uint256)
+        - event: SettlerAssignedToCase(indexed address,indexed uint256)
           handler: handleSettlerAssignedToCase
         # - event: SettlerStaked(indexed address,indexed uint256)
         #   handler: handleSettlerStaked
@@ -87,9 +87,9 @@ dataSources:
           handler: handleSettlerUnstaked
         - event: SettlerVoted(indexed uint256,indexed address,indexed bool,uint8,uint256)
           handler: handleSettlerVoted
-        - event: TokenAdded(indexed address,address)
+        - event: TokenAdded(indexed address,indexed address)
           handler: handleTokenAdded
-        - event: TokenRemoved(indexed address,address)
+        - event: TokenRemoved(indexed address,indexed address)
           handler: handleTokenRemoved
         - event: TraderVoted(indexed uint256,indexed address,indexed bool,uint8,uint256)
           handler: handleTraderVoted
