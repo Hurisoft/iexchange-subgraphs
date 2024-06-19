@@ -1,382 +1,97 @@
-type CurrencyAdded @entity(immutable: true) {
-  id: Bytes!
-  _addedBy: Bytes! # address
-  _currency: String! # string
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+type Account @entity(immutable: true) {
+  id: Bytes! # address
+  isSettler: Boolean!
+  isTrader: Boolean!
+  isMerchant: Boolean!
+  isKYCAgent: Boolean!
+  isAMLAgent: Boolean!
+  isDao: Boolean!
+  currenciesAdded: [Currency!]! @derivedFrom(field: "addedBy")
+  currenciesRemoved: [Currency!]! @derivedFrom(field: "removedBy")
+  tokensAdded: [P2PToken!]! @derivedFrom(field: "addedBy")
+  tokensRemoved: [P2PToken!]! @derivedFrom(field: "removedBy")
+  paymentsAdded: [PaymentMethod!]! @derivedFrom(field: "addedBy")
+  paymentsRemoved: [PaymentMethod!]! @derivedFrom(field: "removedBy")
+  torders: [Order!]! @derivedFrom(field: "trader")
+  offers: [Offer!]! @derivedFrom(field: "merchant")
+  appeals: [Appeal!]! @derivedFrom(field: "appealer")
+  offerDeposits: [Offer!]! @derivedFrom(field: "depositAddress")
+  orderDeposits: [Order!]! @derivedFrom(field: "depositAddress")
 }
 
-type CurrencyRemoved @entity(immutable: true) {
-  id: Bytes!
-  _removedBy: Bytes! # address
-  _currency: String! # string
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+type P2PToken @entity(immutable: true) {
+  id: Bytes! # address
+  addedBy: Account!
+  removedBy: Account
+  name: String!
+  symbol: String!
+  isTraded: Boolean!
+  tokenOffers: [Offer!]! @derivedFrom(field: "token")
 }
 
-type DAOVoted @entity(immutable: true) {
-  id: Bytes!
-  appealId: BigInt! # uint256
-  daoVote: Int! # uint8
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+type Currency @entity(immutable: true) {
+  id: Bytes! # currency bytes
+  addedBy: Account!
+  removedBy: Account
+  currency: String! # String
+  isAccepted: Boolean!
+  currencyOffers: [Offer!]! @derivedFrom(field: "currency")
 }
 
-type MerchantStaked @entity(immutable: true) {
-  id: Bytes!
-  merchant: Bytes! # address
-  amount: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+type PaymentMethod @entity(immutable: true) {
+  id: Bytes! # method bytes
+  addedBy: Account!
+  removedBy: Account
+  method: String! # String
+  isAccepted: Boolean!
+  offers: [Offer!]! @derivedFrom(field: "paymentMethod")
 }
 
-type MerchantUnstaked @entity(immutable: true) {
-  id: Bytes!
-  merchant: Bytes! # address
-  amount: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type MerchantVoted @entity(immutable: true) {
-  id: Bytes!
-  appealId: BigInt! # uint256
-  merchant: Bytes! # address
-  settled: Boolean! # bool
-  merchantVote: Int! # uint8
-  roundId: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type NewMerchant @entity(immutable: true) {
-  id: Bytes!
-  merchant: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type NewOffer @entity(immutable: true) {
-  id: Bytes!
-  token: Bytes! # address
-  currency: String! # string
-  paymentMethod: Bytes! # bytes32
-  offerId: BigInt! # uint256
+type Offer @entity(immutable: true) {
+  id: Bytes! # offerId
+  token: P2PToken! # address
+  currency: Currency! # String
+  paymentMethod: PaymentMethod! # bytes32
   rate: BigInt! # uint256
   minOrder: BigInt! # uint256
   maxOrder: BigInt! # uint256
   active: Boolean! # bool
-  merchant: Bytes! # address
+  merchant: Account! 
   accountHash: Bytes! # bytes32
-  depositAddress: Bytes! # address
-  offerType: Int! # uint8
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+  depositAddress: Account!
+  orders: [Order!]! @derivedFrom(field: "offer")
 }
 
-type NewOrder @entity(immutable: true) {
-  id: Bytes!
-  offerId: BigInt! # uint256
-  trader: Bytes! # address
+type Order @entity(immutable: true) {
+  id: Bytes! # orderId
+  offer: Offer!
+  trader: Account!
   orderType: Int! # uint8
   quantity: BigInt! # uint256
-  depositAddress: Bytes! # address
+  depositAddress: Account!
   accountHash: Bytes! # bytes32
-  appealId: BigInt! # uint256
+  appeal: Appeal
   status: Int! # uint8
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
 }
 
-type NewSettler @entity(immutable: true) {
-  id: Bytes!
-  settler: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type NewTrader @entity(immutable: true) {
-  id: Bytes!
-  trader: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type OfferDisabled @entity(immutable: true) {
-  id: Bytes!
-  offerId: BigInt! # uint256
-  active: Boolean! # bool
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type OfferEnabled @entity(immutable: true) {
-  id: Bytes!
-  offerId: BigInt! # uint256
-  active: Boolean! # bool
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type OrderAccepted @entity(immutable: true) {
-  id: Bytes!
-  orderId: BigInt! # uint256
-  status: Int! # uint8
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type OrderAppealed @entity(immutable: true) {
-  id: Bytes!
-  orderId: BigInt! # uint256
-  appealId: BigInt! # uint256
-  appealer: Bytes! # address
+type Appeal @entity(immutable: true) {
+  id: Bytes! # appealId
+  order: Order!
+  appealer: Account!
   reasonHash: Bytes! # bytes32
   daoVote: Int! # uint8
   appealDecision: Int! # uint8
-  status: Int! # uint8
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+  currentSettler: Account
+  settlerPickTime: BigInt
+  rounds: [AppealRound!]! @derivedFrom(field: "appeal")
 }
 
-type OrderCancelled @entity(immutable: true) {
-  id: Bytes!
-  orderId: BigInt! # uint256
-  status: Int! # uint8
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type OrderPaid @entity(immutable: true) {
-  id: Bytes!
-  orderId: BigInt! # uint256
-  status: Int! # uint8
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type OrderReleased @entity(immutable: true) {
-  id: Bytes!
-  orderId: BigInt! # uint256
-  status: Int! # uint8
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type OwnershipTransferred @entity(immutable: true) {
-  id: Bytes!
-  previousOwner: Bytes! # address
-  newOwner: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type PaymentMethodAdded @entity(immutable: true) {
-  id: Bytes!
-  _addedBy: Bytes! # address
-  _method: String! # string
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type PaymentMethodRemoved @entity(immutable: true) {
-  id: Bytes!
-  _removedBy: Bytes! # address
-  _method: String! # string
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type PenaltySlashed @entity(immutable: true) {
-  id: Bytes!
-  appealId: BigInt! # uint256
-  affected: [Bytes!]! # address[]
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type RewardDistributed @entity(immutable: true) {
-  id: Bytes!
-  appealId: BigInt! # uint256
-  beneficiaries: [Bytes!]! # address[]
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type SettlerAssignedToCase @entity(immutable: true) {
-  id: Bytes!
-  _settler: Bytes! # address
-  _caseId: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type SettlerStaked @entity(immutable: true) {
-  id: Bytes!
-  settler: Bytes! # address
-  amount: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type SettlerUnstaked @entity(immutable: true) {
-  id: Bytes!
-  settler: Bytes! # address
-  amount: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type SettlerVoted @entity(immutable: true) {
-  id: Bytes!
-  appealId: BigInt! # uint256
-  settler: Bytes! # address
-  settled: Boolean! # bool
-  settlerVote: Int! # uint8
-  roundId: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type TokenAdded @entity(immutable: true) {
-  id: Bytes!
-  _token: Bytes! # address
-  _addedBy: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type TokenRemoved @entity(immutable: true) {
-  id: Bytes!
-  _token: Bytes! # address
-  _addedBy: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type TraderVoted @entity(immutable: true) {
-  id: Bytes!
-  appealId: BigInt! # uint256
-  trader: Bytes! # address
-  settled: Boolean! # bool
-  traderVote: Int! # uint8
-  roundId: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-type AgentAdded @entity(immutable: true) {
-  id: Bytes!
-  _agent: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type AgentRemoved @entity(immutable: true) {
-  id: Bytes!
-  _agent: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type KYCLevelDowngraded @entity(immutable: true) {
-  id: Bytes!
-  _address: Bytes! # address
-  _agent: Bytes! # address
-  _level: Int! # uint8
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type KYCLevelUpgraded @entity(immutable: true) {
-  id: Bytes!
-  _address: Bytes! # address
-  _agent: Bytes! # address
-  _level: Int! # uint8
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type KYCWhitelistOwnershipTransferred @entity(immutable: true) {
-  id: Bytes!
-  previousOwner: Bytes! # address
-  newOwner: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-type AMLBlacklistAgentAdded @entity(immutable: true) {
-  id: Bytes!
-  _agent: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type AMLBlacklistAgentRemoved @entity(immutable: true) {
-  id: Bytes!
-  _agent: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type BlacklistAdded @entity(immutable: true) {
-  id: Bytes!
-  _address: Bytes! # address
-  _agent: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type BlacklistRemoved @entity(immutable: true) {
-  id: Bytes!
-  _address: Bytes! # address
-  _agent: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type AMLBlacklistOwnershipTransferred @entity(immutable: true) {
-  id: Bytes!
-  previousOwner: Bytes! # address
-  newOwner: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+type AppealRound @entity(immutable: true) {
+  id: Bytes! # appealId + roundId
+  appeal: Appeal!
+  settler: Account!
+  settled: Boolean!
+  settlerVote: Int!
+  merchantVote: Int!
+  traderVote: Int!
 }

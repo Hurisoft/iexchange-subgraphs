@@ -16,39 +16,19 @@ dataSources:
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - CurrencyAdded
-        - CurrencyRemoved
-        - DAOVoted
-        - MerchantStaked
-        - MerchantUnstaked
-        - MerchantVoted
-        - NewMerchant
-        - NewOffer
-        - NewOrder
-        - NewSettler
-        - NewTrader
-        - OfferDisabled
-        - OfferEnabled
-        - OrderAccepted
-        - OrderAppealed
-        - OrderCancelled
-        - OrderPaid
-        - OrderReleased
-        - OwnershipTransferred
-        - PaymentMethodAdded
-        - PaymentMethodRemoved
-        - PenaltySlashed
-        - RewardDistributed
-        - SettlerAssignedToCase
-        - SettlerStaked
-        - SettlerUnstaked
-        - SettlerVoted
-        - TokenAdded
-        - TokenRemoved
-        - TraderVoted
+        - Account
+        - P2PToken
+        - Currency
+        - PaymentMethod
+        - Offer
+        - Order
+        - Appeal
+        - AppealRound
       abis:
         - name: OptimisticP2P
           file: ./abis/OptimisticP2P.json
+        - name: ERC20
+          file: ./abis/ERC20.json
       eventHandlers:
         - event: CurrencyAdded(address,string)
           handler: handleCurrencyAdded
@@ -56,8 +36,8 @@ dataSources:
           handler: handleCurrencyRemoved
         - event: DAOVoted(indexed uint256,uint8)
           handler: handleDAOVoted
-        - event: MerchantStaked(indexed address,indexed uint256)
-          handler: handleMerchantStaked
+        # - event: MerchantStaked(indexed address,indexed uint256)
+        #   handler: handleMerchantStaked
         - event: MerchantUnstaked(indexed address,indexed uint256)
           handler: handleMerchantUnstaked
         - event: MerchantVoted(indexed uint256,indexed address,indexed bool,uint8,uint256)
@@ -89,20 +69,20 @@ dataSources:
           handler: handleOrderPaid
         - event: OrderReleased(indexed uint256,uint8)
           handler: handleOrderReleased
-        - event: OwnershipTransferred(indexed address,indexed address)
-          handler: handleOwnershipTransferred
+        # - event: OwnershipTransferred(indexed address,indexed address)
+        #   handler: handleOwnershipTransferred
         - event: PaymentMethodAdded(address,string)
           handler: handlePaymentMethodAdded
         - event: PaymentMethodRemoved(address,string)
           handler: handlePaymentMethodRemoved
-        - event: PenaltySlashed(indexed uint256,address[])
-          handler: handlePenaltySlashed
-        - event: RewardDistributed(indexed uint256,address[])
-          handler: handleRewardDistributed
+        # - event: PenaltySlashed(indexed uint256,address[])
+        #   handler: handlePenaltySlashed
+        # - event: RewardDistributed(indexed uint256,address[])
+        #   handler: handleRewardDistributed
         - event: SettlerAssignedToCase(address,uint256)
           handler: handleSettlerAssignedToCase
-        - event: SettlerStaked(indexed address,indexed uint256)
-          handler: handleSettlerStaked
+        # - event: SettlerStaked(indexed address,indexed uint256)
+        #   handler: handleSettlerStaked
         - event: SettlerUnstaked(indexed address,indexed uint256)
           handler: handleSettlerUnstaked
         - event: SettlerVoted(indexed uint256,indexed address,indexed bool,uint8,uint256)
@@ -113,68 +93,4 @@ dataSources:
           handler: handleTokenRemoved
         - event: TraderVoted(indexed uint256,indexed address,indexed bool,uint8,uint256)
           handler: handleTraderVoted
-      file: ./src/optimistic-p-2-p.ts
-  - kind: ethereum
-    name: KYCWhitelist
-    network: base-sepolia
-    source:
-      address: "0xa7c3a5bd99E11E0d8cD21952a0133449b194d3A8"
-      abi: KYCWhitelist
-      startBlock: 11467671
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.7
-      language: wasm/assemblyscript
-      entities:
-        - AgentAdded
-        - AgentRemoved
-        - KYCLevelDowngraded
-        - KYCLevelUpgraded
-        - KYCWhitelistOwnershipTransferred
-      abis:
-        - name: KYCWhitelist
-          file: ./abis/KYCWhitelist.json
-      eventHandlers:
-        - event: AgentAdded(indexed address)
-          handler: handleAgentAdded
-        - event: AgentRemoved(indexed address)
-          handler: handleAgentRemoved
-        - event: KYCLevelDowngraded(address,address,uint8)
-          handler: handleKYCLevelDowngraded
-        - event: KYCLevelUpgraded(address,address,uint8)
-          handler: handleKYCLevelUpgraded
-        - event: OwnershipTransferred(indexed address,indexed address)
-          handler: handleOwnershipTransferred
-      file: ./src/kyc-whitelist.ts
-  - kind: ethereum
-    name: AMLBlacklist
-    network: base-sepolia
-    source:
-      address: "0x18604e817ad31fF53031B955f834Df4B26e5AB73"
-      abi: AMLBlacklist
-      startBlock: 11467709
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.7
-      language: wasm/assemblyscript
-      entities:
-        - AMLBlacklistAgentAdded
-        - AMLBlacklistAgentRemoved
-        - BlacklistAdded
-        - BlacklistRemoved
-        - AMLBlacklistOwnershipTransferred
-      abis:
-        - name: AMLBlacklist
-          file: ./abis/AMLBlacklist.json
-      eventHandlers:
-        - event: AgentAdded(indexed address)
-          handler: handleAgentAdded
-        - event: AgentRemoved(indexed address)
-          handler: handleAgentRemoved
-        - event: BlacklistAdded(address,address)
-          handler: handleBlacklistAdded
-        - event: BlacklistRemoved(address,address)
-          handler: handleBlacklistRemoved
-        - event: OwnershipTransferred(indexed address,indexed address)
-          handler: handleOwnershipTransferred
-      file: ./src/aml-blacklist.ts
+      file: ./src/optimistic-p2p.ts
