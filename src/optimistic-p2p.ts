@@ -42,7 +42,7 @@ import {
   Appeal,
   AppealRound,
 } from "../generated/schema";
-import { saveAccount } from "./helpers";
+import { saveAccount, bigIntToBytes } from "./helpers";
 
 export function handleCurrencyAdded(event: CurrencyAddedEvent): void {
   const id = Bytes.fromUTF8(event.params._currency);
@@ -172,7 +172,7 @@ export function handleSettlerUnstaked(event: SettlerUnstakedEvent): void {
 }
 
 export function handleNewOffer(event: NewOfferEvent): void {
-  const id = Bytes.fromBigInt(event.params.offerId);
+  const id = bigIntToBytes(event.params.offerId);
   let offer = Offer.load(id);
   if (offer == null) {
     offer = new Offer(id);
@@ -194,7 +194,7 @@ export function handleNewOffer(event: NewOfferEvent): void {
 }
 
 export function handleOfferDisabled(event: OfferDisabledEvent): void {
-  const id = Bytes.fromBigInt(event.params.offerId);
+  const id = bigIntToBytes(event.params.offerId);
   let offer = Offer.load(id);
   if (offer == null) {
     offer = new Offer(id);
@@ -204,7 +204,7 @@ export function handleOfferDisabled(event: OfferDisabledEvent): void {
 }
 
 export function handleOfferEnabled(event: OfferEnabledEvent): void {
-  const id = Bytes.fromBigInt(event.params.offerId);
+  const id = bigIntToBytes(event.params.offerId);
   let offer = Offer.load(id);
   if (offer == null) {
     offer = new Offer(id);
@@ -219,10 +219,10 @@ export function handleNewOrder(event: NewOrderEvent): void {
   if (order == null) {
     order = new Order(id);
   }
-  order.offer = Bytes.fromBigInt(event.params.offerId);
+  order.offer = bigIntToBytes(event.params.offerId);
   order.trader = event.params.trader;
   order.orderType = event.params.orderType;
-  order.appeal = Bytes.fromBigInt(event.params.appealId);
+  order.appeal = bigIntToBytes(event.params.appealId);
   order.status = event.params.status;
 
   order.quantity = event.params.quantity;
@@ -235,7 +235,7 @@ export function handleNewOrder(event: NewOrderEvent): void {
 }
 
 export function handleOrderAccepted(event: OrderAcceptedEvent): void {
-  const id = Bytes.fromBigInt(event.params.orderId);
+  const id = bigIntToBytes(event.params.orderId);
   let order = Order.load(id);
   if (order == null) {
     return;
@@ -245,7 +245,7 @@ export function handleOrderAccepted(event: OrderAcceptedEvent): void {
 }
 
 export function handleOrderPaid(event: OrderPaidEvent): void {
-  const id = Bytes.fromBigInt(event.params.orderId);
+  const id = bigIntToBytes(event.params.orderId);
   let order = Order.load(id);
   if (order == null) {
     return;
@@ -255,7 +255,7 @@ export function handleOrderPaid(event: OrderPaidEvent): void {
 }
 
 export function handleOrderReleased(event: OrderReleasedEvent): void {
-  const id = Bytes.fromBigInt(event.params.orderId);
+  const id = bigIntToBytes(event.params.orderId);
   let order = Order.load(id);
   if (order == null) {
     return;
@@ -265,7 +265,7 @@ export function handleOrderReleased(event: OrderReleasedEvent): void {
 }
 
 export function handleOrderCancelled(event: OrderCancelledEvent): void {
-  const id = Bytes.fromBigInt(event.params.orderId);
+  const id = bigIntToBytes(event.params.orderId);
   let order = Order.load(id);
   if (order == null) {
     return;
@@ -275,12 +275,12 @@ export function handleOrderCancelled(event: OrderCancelledEvent): void {
 }
 
 export function handleOrderAppealed(event: OrderAppealedEvent): void {
-  const orderId = Bytes.fromBigInt(event.params.orderId);
+  const orderId = bigIntToBytes(event.params.orderId);
   let order = Order.load(orderId);
   if (order == null) {
     return;
   }
-  const appealId = Bytes.fromBigInt(event.params.orderId);
+  const appealId = bigIntToBytes(event.params.orderId);
   let appeal = Appeal.load(appealId);
   if (appeal == null) {
     return;
@@ -307,7 +307,7 @@ export function handleOrderAppealed(event: OrderAppealedEvent): void {
 export function handleSettlerAssignedToCase(
   event: SettlerAssignedToCaseEvent
 ): void {
-  const id = Bytes.fromBigInt(event.params._caseId);
+  const id = bigIntToBytes(event.params._caseId);
   const appeal = Appeal.load(id);
   if (appeal == null) {
     return;
@@ -323,13 +323,13 @@ export function handleSettlerVoted(event: SettlerVotedEvent): void {
   if (account == null) {
     return;
   }
-  const appealId = Bytes.fromBigInt(event.params.appealId);
+  const appealId = bigIntToBytes(event.params.appealId);
   const appeal = Appeal.load(appealId);
   if (appeal == null) {
     return;
   }
-  let roundId = Bytes.fromBigInt(event.params.appealId).concat(
-    Bytes.fromBigInt(event.params.roundId)
+  let roundId = bigIntToBytes(event.params.appealId).concat(
+    bigIntToBytes(event.params.roundId)
   );
   let round = AppealRound.load(roundId);
   if (round == null) {
@@ -347,13 +347,13 @@ export function handleTraderVoted(event: TraderVotedEvent): void {
   if (account == null) {
     return;
   }
-  const appealId = Bytes.fromBigInt(event.params.appealId);
+  const appealId = bigIntToBytes(event.params.appealId);
   const appeal = Appeal.load(appealId);
   if (appeal == null) {
     return;
   }
-  let roundId = Bytes.fromBigInt(event.params.appealId).concat(
-    Bytes.fromBigInt(event.params.roundId)
+  let roundId = bigIntToBytes(event.params.appealId).concat(
+    bigIntToBytes(event.params.roundId)
   );
   const round = AppealRound.load(roundId);
   if (round == null) {
@@ -375,13 +375,13 @@ export function handleMerchantVoted(event: MerchantVotedEvent): void {
   if (account == null) {
     return;
   }
-  const appealId = Bytes.fromBigInt(event.params.appealId);
+  const appealId = bigIntToBytes(event.params.appealId);
   const appeal = Appeal.load(appealId);
   if (appeal == null) {
     return;
   }
-  let roundId = Bytes.fromBigInt(event.params.appealId).concat(
-    Bytes.fromBigInt(event.params.roundId)
+  let roundId = bigIntToBytes(event.params.appealId).concat(
+    bigIntToBytes(event.params.roundId)
   );
   const round = AppealRound.load(roundId);
   if (round == null) {
@@ -398,7 +398,7 @@ export function handleMerchantVoted(event: MerchantVotedEvent): void {
 }
 
 export function handleDAOVoted(event: DAOVotedEvent): void {
-  const appealId = Bytes.fromBigInt(event.params.appealId);
+  const appealId = bigIntToBytes(event.params.appealId);
   const appeal = Appeal.load(appealId);
   if (appeal == null) {
     return;

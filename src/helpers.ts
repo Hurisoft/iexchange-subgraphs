@@ -1,4 +1,4 @@
-import { Address } from "@graphprotocol/graph-ts";
+import { Address, BigInt, Bytes } from "@graphprotocol/graph-ts";
 import { Account } from "../generated/schema";
 
 export function saveAccount(address: Address): void {
@@ -7,4 +7,8 @@ export function saveAccount(address: Address): void {
     account = new Account(address);
     account.save();
   }
+}
+
+export function bigIntToBytes(bint: BigInt): Bytes {
+    return Bytes.fromHexString(bint.toHex());
 }
