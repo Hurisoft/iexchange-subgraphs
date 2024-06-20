@@ -42,23 +42,23 @@ import {
   Appeal,
   AppealRound,
 } from "../generated/schema";
-import { saveAccount, bigIntToBytes } from "./helpers";
+import { saveAccount } from "./helpers";
 
 export function handleCurrencyAdded(event: CurrencyAddedEvent): void {
-  const id = event.params._currency;
+  const id = Bytes.fromUTF8(event.params._currency);
   let currency = Currency.load(id);
   if (currency == null) {
     currency = new Currency(id);
   }
   currency.addedBy = event.params._addedBy;
-  currency.currency = event.params._currency.toString();
+  currency.currency = event.params._currency;
   currency.isAccepted = true;
   saveAccount(event.params._addedBy);
   currency.save();
 }
 
 export function handleCurrencyRemoved(event: CurrencyRemovedEvent): void {
-  const id = event.params._currency;
+  const id = Bytes.fromUTF8(event.params._currency);
   let currency = Currency.load(id);
   if (currency == null) {
     return;
@@ -70,13 +70,13 @@ export function handleCurrencyRemoved(event: CurrencyRemovedEvent): void {
 }
 
 export function handlePaymentMethodAdded(event: PaymentMethodAddedEvent): void {
-  const id = event.params._method;
+  const id = Bytes.fromUTF8(event.params._method);
   let method = PaymentMethod.load(id);
   if (method == null) {
     method = new PaymentMethod(id);
   }
   method.addedBy = event.params._addedBy;
-  method.method = event.params._method.toString();
+  method.method = event.params._method;
   method.isAccepted = true;
   saveAccount(event.params._addedBy);
   method.save();
@@ -85,7 +85,7 @@ export function handlePaymentMethodAdded(event: PaymentMethodAddedEvent): void {
 export function handlePaymentMethodRemoved(
   event: PaymentMethodRemovedEvent
 ): void {
-  const id = event.params._method;
+  const id = Bytes.fromUTF8(event.params._method);
   let method = PaymentMethod.load(id);
   if (method == null) {
     return;
@@ -193,14 +193,14 @@ export function handleSettlerUnstaked(event: SettlerUnstakedEvent): void {
 }
 
 export function handleNewOffer(event: NewOfferEvent): void {
-  const id = bigIntToBytes(event.params.offerId);
+  const id = event.params.offerId.toString();
   let offer = Offer.load(id);
   if (offer == null) {
     offer = new Offer(id);
   }
   offer.token = event.params.token;
-  offer.currency = event.params.currency;
-  offer.paymentMethod = event.params.paymentMethod;
+  offer.currency = Bytes.fromUTF8(event.params.currency);
+  offer.paymentMethod = Bytes.fromUTF8(event.params.paymentMethod);
   offer.rate = event.params.rate;
   offer.minOrder = event.params.minOrder;
   offer.maxOrder = event.params.maxOrder;
@@ -213,7 +213,7 @@ export function handleNewOffer(event: NewOfferEvent): void {
 }
 
 export function handleOfferDisabled(event: OfferDisabledEvent): void {
-  const id = bigIntToBytes(event.params.offerId);
+  const id = event.params.offerId.toString();
   let offer = Offer.load(id);
   if (offer == null) {
     return;
@@ -223,7 +223,7 @@ export function handleOfferDisabled(event: OfferDisabledEvent): void {
 }
 
 export function handleOfferEnabled(event: OfferEnabledEvent): void {
-  const id = bigIntToBytes(event.params.offerId);
+  const id = event.params.offerId.toString();
   let offer = Offer.load(id);
   if (offer == null) {
     return;
@@ -233,25 +233,25 @@ export function handleOfferEnabled(event: OfferEnabledEvent): void {
 }
 
 export function handleNewOrder(event: NewOrderEvent): void {
-  const id = bigIntToBytes(event.params.orderId);
+  const id = event.params.orderId.toString();
   let order = Order.load(id);
   if (order == null) {
     order = new Order(id);
   }
-  order.offer = bigIntToBytes(event.params.offerId);
+  order.offer = event.params.offerId.toString();
   order.trader = event.params.trader;
   order.orderType = event.params.orderType;
   order.quantity = event.params.quantity;
   order.depositAddress = event.params.depositAddress;
   order.accountHash = event.params.accountHash;
-  order.appeal = bigIntToBytes(event.params.appealId);
+  order.appeal = event.params.appealId.toString();
   order.status = event.params.status;
   saveAccount(event.params.depositAddress);
   order.save();
 }
 
 export function handleOrderAccepted(event: OrderAcceptedEvent): void {
-  const id = bigIntToBytes(event.params.orderId);
+  const id = event.params.orderId.toString();
   let order = Order.load(id);
   if (order == null) {
     return;
@@ -261,7 +261,7 @@ export function handleOrderAccepted(event: OrderAcceptedEvent): void {
 }
 
 export function handleOrderPaid(event: OrderPaidEvent): void {
-  const id = bigIntToBytes(event.params.orderId);
+  const id = event.params.orderId.toString();
   let order = Order.load(id);
   if (order == null) {
     return;
@@ -271,7 +271,7 @@ export function handleOrderPaid(event: OrderPaidEvent): void {
 }
 
 export function handleOrderReleased(event: OrderReleasedEvent): void {
-  const id = bigIntToBytes(event.params.orderId);
+  const id = event.params.orderId.toString();
   let order = Order.load(id);
   if (order == null) {
     return;
@@ -281,7 +281,7 @@ export function handleOrderReleased(event: OrderReleasedEvent): void {
 }
 
 export function handleOrderCancelled(event: OrderCancelledEvent): void {
-  const id = bigIntToBytes(event.params.orderId);
+  const id = event.params.orderId.toString();
   let order = Order.load(id);
   if (order == null) {
     return;
@@ -291,12 +291,12 @@ export function handleOrderCancelled(event: OrderCancelledEvent): void {
 }
 
 export function handleOrderAppealed(event: OrderAppealedEvent): void {
-  const orderId = bigIntToBytes(event.params.orderId);
+  const orderId = event.params.orderId.toString();
   let order = Order.load(orderId);
   if (order == null) {
     return;
   }
-  const appealId = bigIntToBytes(event.params.orderId);
+  const appealId = event.params.orderId.toString();
   let appeal = Appeal.load(appealId);
   if (appeal == null) {
     return;
@@ -322,7 +322,7 @@ export function handleOrderAppealed(event: OrderAppealedEvent): void {
 export function handleSettlerAssignedToCase(
   event: SettlerAssignedToCaseEvent
 ): void {
-  const id = bigIntToBytes(event.params._caseId);
+  const id = event.params._caseId.toString();
   const appeal = Appeal.load(id);
   if (appeal == null) {
     return;
@@ -338,12 +338,12 @@ export function handleSettlerVoted(event: SettlerVotedEvent): void {
   if (account == null) {
     return;
   }
-  const appealId = bigIntToBytes(event.params.appealId);
+  const appealId = event.params.appealId.toString();
   const appeal = Appeal.load(appealId);
   if (appeal == null) {
     return;
   }
-  let roundId = appealId.concat(bigIntToBytes(event.params.roundId));
+  let roundId = appealId.concat(event.params.roundId.toString());
   let round = AppealRound.load(roundId);
   if (round == null) {
     round = new AppealRound(roundId);
@@ -363,12 +363,12 @@ export function handleTraderVoted(event: TraderVotedEvent): void {
   if (account == null) {
     return;
   }
-  const appealId = bigIntToBytes(event.params.appealId);
+  const appealId = event.params.appealId.toString();
   const appeal = Appeal.load(appealId);
   if (appeal == null) {
     return;
   }
-  let roundId = appealId.concat(bigIntToBytes(event.params.roundId));
+  let roundId = appealId.concat(event.params.roundId.toString());
   const round = AppealRound.load(roundId);
   if (round == null) {
     return;
@@ -389,12 +389,12 @@ export function handleMerchantVoted(event: MerchantVotedEvent): void {
   if (account == null) {
     return;
   }
-  const appealId = bigIntToBytes(event.params.appealId);
+  const appealId = event.params.appealId.toString();
   const appeal = Appeal.load(appealId);
   if (appeal == null) {
     return;
   }
-  let roundId = appealId.concat(bigIntToBytes(event.params.roundId));
+  let roundId = appealId.concat(event.params.roundId.toString());
   const round = AppealRound.load(roundId);
   if (round == null) {
     return;
@@ -410,7 +410,7 @@ export function handleMerchantVoted(event: MerchantVotedEvent): void {
 }
 
 export function handleDAOVoted(event: DAOVotedEvent): void {
-  const appealId = bigIntToBytes(event.params.appealId);
+  const appealId = event.params.appealId.toString();
   const appeal = Appeal.load(appealId);
   if (appeal == null) {
     return;

@@ -8,9 +8,9 @@ dataSources:
     name: OptimisticP2P
     network: base-sepolia
     source:
-      address: "0xeCbc2bEfa8d0F192CF5605B5e940EeAa0c91d6Ad"
+      address: "0x2977c7941c59572433DF543cDBDF92a5Ae8F6267"
       abi: OptimisticP2P
-      startBlock: 11468519
+      startBlock: 11546804
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -30,67 +30,64 @@ dataSources:
         - name: ERC20
           file: ./abis/ERC20.json
       eventHandlers:
-        - event: CurrencyAdded(indexed address,indexed string)
+        - event: CurrencyAdded(address,string)
           handler: handleCurrencyAdded
-        - event: CurrencyRemoved(indexed address,indexed string)
+        - event: CurrencyRemoved(address,string)
           handler: handleCurrencyRemoved
-        - event: DAOVoted(indexed uint256,indexed uint8)
+        - event: DAOVoted(uint256,uint8)
           handler: handleDAOVoted
-        # - event: MerchantStaked(indexed address,indexed uint256)
+        # - event: MerchantStaked(address,uint256)
         #   handler: handleMerchantStaked
-        - event: MerchantUnstaked(indexed address,indexed uint256)
+        - event: MerchantUnstaked(address,uint256)
           handler: handleMerchantUnstaked
-        - event: MerchantVoted(indexed uint256,indexed address,indexed bool,uint8,uint256)
+        - event: MerchantVoted(uint256,address,bool,uint8,uint256)
           handler: handleMerchantVoted
-        - event: NewMerchant(indexed address)
+        - event: NewMerchant(address)
           handler: handleNewMerchant
-        - event: NewOffer(indexed address,indexed string,indexed
-            string,uint256,uint256,uint256,uint256,bool,address,bytes32,address,uint8)
+        - event: NewOffer(address,string,string,uint256,uint256,uint256,uint256,bool,address,bytes32,address,uint8)
           handler: handleNewOffer
-        - event: NewOrder(indexed uint256,indexed address,indexed
-            uint8,uint256,uint256,address,bytes32,uint256,uint8)
+        - event: NewOrder(uint256,address,uint8,uint256,uint256,address,bytes32,uint256,uint8)
           handler: handleNewOrder
-        - event: NewSettler(indexed address)
+        - event: NewSettler(address)
           handler: handleNewSettler
-        - event: NewTrader(indexed address)
+        - event: NewTrader(address)
           handler: handleNewTrader
-        - event: OfferDisabled(indexed uint256,indexed bool)
+        - event: OfferDisabled(uint256,bool)
           handler: handleOfferDisabled
-        - event: OfferEnabled(indexed uint256,indexed bool)
+        - event: OfferEnabled(uint256,bool)
           handler: handleOfferEnabled
-        - event: OrderAccepted(indexed uint256,indexed uint8)
+        - event: OrderAccepted(uint256,uint8)
           handler: handleOrderAccepted
-        - event: OrderAppealed(indexed uint256,indexed uint256,indexed
-            address,bytes32,uint8,uint8,uint8)
+        - event: OrderAppealed(uint256,uint256,address,bytes32,uint8,uint8,uint8)
           handler: handleOrderAppealed
-        - event: OrderCancelled(indexed uint256,indexed uint8)
+        - event: OrderCancelled(uint256,uint8)
           handler: handleOrderCancelled
-        - event: OrderPaid(indexed uint256,indexed uint8)
+        - event: OrderPaid(uint256,uint8)
           handler: handleOrderPaid
-        - event: OrderReleased(indexed uint256,indexed uint8)
+        - event: OrderReleased(uint256,uint8)
           handler: handleOrderReleased
-        # - event: OwnershipTransferred(indexed address,indexed address)
+        # - event: OwnershipTransferred(address,address)
         #   handler: handleOwnershipTransferred
-        - event: PaymentMethodAdded(indexed address,indexed string)
+        - event: PaymentMethodAdded(address,string)
           handler: handlePaymentMethodAdded
-        - event: PaymentMethodRemoved(indexed address,indexed string)
+        - event: PaymentMethodRemoved(address,string)
           handler: handlePaymentMethodRemoved
-        # - event: PenaltySlashed(indexed uint256,address[])
+        # - event: PenaltySlashed(uint256,address[])
         #   handler: handlePenaltySlashed
-        # - event: RewardDistributed(indexed uint256,address[])
+        # - event: RewardDistributed(uint256,address[])
         #   handler: handleRewardDistributed
-        - event: SettlerAssignedToCase(indexed address,indexed uint256)
+        - event: SettlerAssignedToCase(address,uint256)
           handler: handleSettlerAssignedToCase
-        # - event: SettlerStaked(indexed address,indexed uint256)
+        # - event: SettlerStaked(address,uint256)
         #   handler: handleSettlerStaked
-        - event: SettlerUnstaked(indexed address,indexed uint256)
+        - event: SettlerUnstaked(address,uint256)
           handler: handleSettlerUnstaked
-        - event: SettlerVoted(indexed uint256,indexed address,indexed bool,uint8,uint256)
+        - event: SettlerVoted(uint256,address,bool,uint8,uint256)
           handler: handleSettlerVoted
-        - event: TokenAdded(indexed address,indexed address)
+        - event: TokenAdded(address,address)
           handler: handleTokenAdded
-        - event: TokenRemoved(indexed address,indexed address)
+        - event: TokenRemoved(address,address)
           handler: handleTokenRemoved
-        - event: TraderVoted(indexed uint256,indexed address,indexed bool,uint8,uint256)
+        - event: TraderVoted(uint256,address,bool,uint8,uint256)
           handler: handleTraderVoted
       file: ./src/optimistic-p2p.ts

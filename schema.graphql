@@ -48,7 +48,7 @@ type PaymentMethod @entity {
 }
 
 type Offer @entity {
-  id: Bytes! # offerId
+  id: String! # offerId
   token: P2PToken! # address
   currency: Currency! # String
   paymentMethod: PaymentMethod! # bytes32
@@ -63,7 +63,7 @@ type Offer @entity {
 }
 
 type Order @entity {
-  id: Bytes! # orderId
+  id: String! # orderId
   offer: Offer!
   trader: Account!
   orderType: Int! # uint8
@@ -75,7 +75,7 @@ type Order @entity {
 }
 
 type Appeal @entity {
-  id: Bytes! # appealId
+  id: String! # appealId
   order: Order!
   appealer: Account!
   reasonHash: Bytes! # bytes32
@@ -87,7 +87,7 @@ type Appeal @entity {
 }
 
 type AppealRound @entity {
-  id: Bytes! # appealId + roundId
+  id: String! # appealId + roundId
   appeal: Appeal!
   settler: Account!
   settled: Boolean!
