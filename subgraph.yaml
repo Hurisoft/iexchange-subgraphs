@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: OptimisticP2P
-    network: base-sepolia
+    network: morph-testnet
     source:
-      address: "0x2977c7941c59572433DF543cDBDF92a5Ae8F6267"
+      address: "0x1E7f97Fc8C240D2B26A42d9A50592Fcd78574B41"
       abi: OptimisticP2P
-      startBlock: 11546804
+      startBlock: 6535021
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7

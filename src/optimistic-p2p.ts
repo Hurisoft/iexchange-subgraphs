@@ -208,6 +208,10 @@ export function handleNewOffer(event: NewOfferEvent): void {
   offer.merchant = event.params.merchant;
   offer.accountHash = event.params.accountHash;
   offer.depositAddress = event.params.depositAddress;
+  offer.offerType = event.params.offerType;
+  offer.blockNumber = event.block.number;
+  offer.blockTimestamp = event.block.timestamp;
+  offer.transactionHash = event.transaction.hash;
   saveAccount(event.params.depositAddress);
   offer.save();
 }
@@ -246,6 +250,9 @@ export function handleNewOrder(event: NewOrderEvent): void {
   order.accountHash = event.params.accountHash;
   order.appeal = event.params.appealId.toString();
   order.status = event.params.status;
+  order.blockNumber = event.block.number;
+  order.blockTimestamp = event.block.timestamp;
+  order.transactionHash = event.transaction.hash;
   saveAccount(event.params.depositAddress);
   order.save();
 }
@@ -296,15 +303,19 @@ export function handleOrderAppealed(event: OrderAppealedEvent): void {
   if (order == null) {
     return;
   }
-  const appealId = event.params.orderId.toString();
+  const appealId = event.params.appealId.toString();
   let appeal = Appeal.load(appealId);
   if (appeal == null) {
-    return;
+    appeal = new Appeal(appealId);
   }
   appeal.order = orderId;
   appeal.appealer = event.params.appealer;
   appeal.reasonHash = event.params.reasonHash;
   appeal.daoVote = event.params.daoVote;
+  appeal.appealDecision = 0;
+  appeal.blockNumber = event.block.number;
+  appeal.blockTimestamp = event.block.timestamp;
+  appeal.transactionHash = event.transaction.hash;
   appeal.save();
   order.status = event.params.status;
   order.appeal = appealId;

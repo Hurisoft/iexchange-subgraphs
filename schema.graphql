@@ -52,6 +52,7 @@ type Offer @entity {
   token: P2PToken! # address
   currency: Currency! # String
   paymentMethod: PaymentMethod! # bytes32
+  offerType: Int! # uint8
   rate: BigInt! # uint256
   minOrder: BigInt! # uint256
   maxOrder: BigInt! # uint256
@@ -60,6 +61,9 @@ type Offer @entity {
   accountHash: Bytes! # bytes32
   depositAddress: Account!
   orders: [Order!]! @derivedFrom(field: "offer")
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
 }
 
 type Order @entity {
@@ -72,6 +76,9 @@ type Order @entity {
   accountHash: Bytes! # bytes32
   appeal: Appeal
   status: Int! # uint8
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
 }
 
 type Appeal @entity {
@@ -84,6 +91,9 @@ type Appeal @entity {
   currentSettler: Account
   settlerPickTime: BigInt
   rounds: [AppealRound!]! @derivedFrom(field: "appeal")
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
 }
 
 type AppealRound @entity {

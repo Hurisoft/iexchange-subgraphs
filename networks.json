@@ -10,5 +10,19 @@
     "AMLBlacklist": {
       "address": "0x18604e817ad31fF53031B955f834Df4B26e5AB73"
     }
+  },
+  "morph-testnet": {
+    "OptimisticP2P": {
+      "address": "0x1E7f97Fc8C240D2B26A42d9A50592Fcd78574B41",
+      "startBlock": 6535021
+    },
+    "KYCWhitelist": {
+      "address": "0xf2D9A61999f22245831b2C51904Fe11F80e5bFD0",
+      "startBlock": 6533036
+    },
+    "AMLBlacklist": {
+      "address": "0xF99F96fe433E79f2A83c67cBd1a6b1B6b986aA6B",
+      "startBlock": 6534210
+    }
   }
 }
