@@ -10,7 +10,7 @@
     "remove-local": "graph remove --node http://localhost:8020/ iexchange-base-sepolia",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 iexchange-base-sepolia",
     "test": "graph test",
-    "goldsky:deploy": "goldsky subgraph deploy iexchange/morph-holesky"
+    "goldsky:deploy": "goldsky subgraph deploy iexchange/arbitrum-sepolia"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.73.0",

@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: OptimisticP2P
-    network: kakarot-sepolia
+    network: arbitrum-sepolia
     source:
-      address: "0x06E33C181394c4910D078F71855fF6c5ccA0f375"
+      address: "0x3B42D1dEF553EE484984C6c3c769BE58005f5d11"
       abi: OptimisticP2P
-      startBlock: 12500
+      startBlock: 97315900
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
