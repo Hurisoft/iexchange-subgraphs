@@ -17,26 +17,22 @@
       "startBlock": 6535021
     },
     "KYCWhitelist": {
-      "address": "0xf2D9A61999f22245831b2C51904Fe11F80e5bFD0",
-      "startBlock": 6533036
+      "address": "0xf2D9A61999f22245831b2C51904Fe11F80e5bFD0"
     },
     "AMLBlacklist": {
-      "address": "0xF99F96fe433E79f2A83c67cBd1a6b1B6b986aA6B",
-      "startBlock": 6534210
+      "address": "0xF99F96fe433E79f2A83c67cBd1a6b1B6b986aA6B"
     }
   },
   "arbitrum-sepolia": {
     "OptimisticP2P": {
       "address": "0x3B42D1dEF553EE484984C6c3c769BE58005f5d11",
-      "startBlock": 6535021
+      "startBlock": 97315900
     },
     "KYCWhitelist": {
-      "address": "0x13041cDFB971226Ac07c171A274cB72Ac8e209Be",
-      "startBlock": 6533036
+      "address": "0x13041cDFB971226Ac07c171A274cB72Ac8e209Be"
     },
     "AMLBlacklist": {
-      "address": "0x11342913a0b3814D1C39C78b3809c0b65B113eAC",
-      "startBlock": 6534210
+      "address": "0x11342913a0b3814D1C39C78b3809c0b65B113eAC"
     }
   }
 }
