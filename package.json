@@ -4,12 +4,13 @@
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
+    "compile": "npm run codegen && npm run build",
     "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ iexchange-base-sepolia",
     "create-local": "graph create --node http://localhost:8020/ iexchange-base-sepolia",
     "remove-local": "graph remove --node http://localhost:8020/ iexchange-base-sepolia",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 iexchange-base-sepolia",
     "test": "graph test",
-    "goldsky:deploy": "goldsky subgraph deploy iexchange/morph-holesky-99"
+    "goldsky:deploy": "goldsky subgraph deploy iexchange/morph-holesky"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.73.0",

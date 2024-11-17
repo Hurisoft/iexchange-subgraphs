@@ -199,8 +199,18 @@ export function handleNewOffer(event: NewOfferEvent): void {
     offer = new Offer(id);
   }
   offer.token = event.params.token;
-  offer.currency = Bytes.fromUTF8(event.params.currency);
-  offer.paymentMethod = Bytes.fromUTF8(event.params.paymentMethod);
+  if (event.params.currency.startsWith("0x")) {
+    offer.currency = Bytes.fromHexString(event.params.currency);
+  } else {
+    offer.currency = Bytes.fromUTF8(event.params.currency);
+  }
+
+  if (event.params.paymentMethod.startsWith("0x")) {
+    offer.paymentMethod = Bytes.fromHexString(event.params.paymentMethod);
+  } else {
+    offer.paymentMethod = Bytes.fromUTF8(event.params.paymentMethod);
+  }
+
   offer.rate = event.params.rate;
   offer.minOrder = event.params.minOrder;
   offer.maxOrder = event.params.maxOrder;
@@ -213,6 +223,7 @@ export function handleNewOffer(event: NewOfferEvent): void {
   offer.blockTimestamp = event.block.timestamp;
   offer.transactionHash = event.transaction.hash;
   saveAccount(event.params.depositAddress);
+  saveAccount(event.params.merchant);
   offer.save();
 }
 
@@ -254,6 +265,7 @@ export function handleNewOrder(event: NewOrderEvent): void {
   order.blockTimestamp = event.block.timestamp;
   order.transactionHash = event.transaction.hash;
   saveAccount(event.params.depositAddress);
+  saveAccount(event.params.trader);
   order.save();
 }
 
@@ -316,6 +328,7 @@ export function handleOrderAppealed(event: OrderAppealedEvent): void {
   appeal.blockNumber = event.block.number;
   appeal.blockTimestamp = event.block.timestamp;
   appeal.transactionHash = event.transaction.hash;
+  saveAccount(event.params.appealer);
   appeal.save();
   order.status = event.params.status;
   order.appeal = appealId;
@@ -340,6 +353,7 @@ export function handleSettlerAssignedToCase(
   }
   appeal.currentSettler = event.params._settler;
   appeal.settlerPickTime = event.block.timestamp;
+  saveAccount(event.params._settler);
   appeal.save();
 }
 
