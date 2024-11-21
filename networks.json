@@ -3,36 +3,24 @@
     "OptimisticP2P": {
       "address": "0xB2002EaFC86DD21eaDAed4b1a7857357a6C3f41f",
       "startBlock": 11468519
-    },
-    "KYCWhitelist": {
-      "address": "0xa7c3a5bd99E11E0d8cD21952a0133449b194d3A8"
-    },
-    "AMLBlacklist": {
-      "address": "0x18604e817ad31fF53031B955f834Df4B26e5AB73"
     }
   },
   "morph-testnet": {
     "OptimisticP2P": {
       "address": "0x1E7f97Fc8C240D2B26A42d9A50592Fcd78574B41",
       "startBlock": 6535021
-    },
-    "KYCWhitelist": {
-      "address": "0xf2D9A61999f22245831b2C51904Fe11F80e5bFD0"
-    },
-    "AMLBlacklist": {
-      "address": "0xF99F96fe433E79f2A83c67cBd1a6b1B6b986aA6B"
     }
   },
   "arbitrum-sepolia": {
     "OptimisticP2P": {
       "address": "0x3B42D1dEF553EE484984C6c3c769BE58005f5d11",
       "startBlock": 97315900
-    },
-    "KYCWhitelist": {
-      "address": "0x13041cDFB971226Ac07c171A274cB72Ac8e209Be"
-    },
-    "AMLBlacklist": {
-      "address": "0x11342913a0b3814D1C39C78b3809c0b65B113eAC"
+    }
+  },
+  "scroll-sepolia": {
+    "OptimisticP2P": {
+      "address": "0x08FD9b19435dD5bdbaF183EE3fe68dCD6fD709EF",
+      "startBlock": 7345807
     }
   }
 }

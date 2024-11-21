@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: OptimisticP2P
-    network: arbitrum-sepolia
+    network: scroll-sepolia
     source:
-      address: "0x3B42D1dEF553EE484984C6c3c769BE58005f5d11"
+      address: "0x08FD9b19435dD5bdbaF183EE3fe68dCD6fD709EF"
       abi: OptimisticP2P
-      startBlock: 97315900
+      startBlock: 7345807
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
