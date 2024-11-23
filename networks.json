@@ -22,5 +22,11 @@
       "address": "0x08FD9b19435dD5bdbaF183EE3fe68dCD6fD709EF",
       "startBlock": 7345807
     }
+  },
+  "ink-sepolia": {
+    "OptimisticP2P": {
+      "address": "0x08FD9b19435dD5bdbaF183EE3fe68dCD6fD709EF",
+      "startBlock": 3330256      
+    }
   }
 }
