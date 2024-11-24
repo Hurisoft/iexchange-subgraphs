@@ -1,8 +1,8 @@
 {
   "base-sepolia": {
     "OptimisticP2P": {
-      "address": "0xB2002EaFC86DD21eaDAed4b1a7857357a6C3f41f",
-      "startBlock": 11468519
+      "address": "0x0c3C2c104A7eDeC4251f8f8D0C737B1C854207b5",
+      "startBlock": 18305632
     }
   },
   "morph-testnet": {
